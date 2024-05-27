@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'agent1'
+        label 'agent-docker'
     }
     stages {
         stage('Check Docker Version') {
@@ -16,7 +16,7 @@ pipeline {
     }
     post {
         always {
-            echo 'Docker agent test completed.'
+            echo 'Docker agent test precieux.'
         }
     }
 }
