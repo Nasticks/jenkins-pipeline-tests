@@ -7,4 +7,4 @@ def home():
     return "Hello, World! This is a simple web server."
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8081)
+    app.run(host='0.0.0.0', port=8000)

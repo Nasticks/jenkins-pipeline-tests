@@ -6,7 +6,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Cloner le dépôt Git
-                git 'https://github.com/Nasticks/jenkins-pipeline-tests.git'
+                git clone 'https://github.com/Nasticks/jenkins-pipeline-tests.git'
             }
         }
         stage('Build Docker Image') {
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 // Exécuter le conteneur Docker
                 script {
-                    dockerImage.run('-p 8081:8081')
+                    dockerImage.run('-p 8000:8000')
                 }
             }
         }
