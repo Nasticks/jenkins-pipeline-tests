@@ -12,7 +12,7 @@ COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Exposer le port de l'application
-EXPOSE 8080
+EXPOSE 8081
 
 # Définir la commande par défaut
 CMD ["python", "app.py"]
