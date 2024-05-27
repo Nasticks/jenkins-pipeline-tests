@@ -1,0 +1,22 @@
+pipeline {
+    agent {
+        label 'jenkins-Agent'
+    }
+    stages {
+        stage('Check OS Version') {
+            steps {
+                sh 'uname -a'
+            }
+        }
+        stage('Check Disk Space') {
+            steps {
+                sh 'df -h'
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Linux agent test completed. precieux'
+        }
+    }
+}
