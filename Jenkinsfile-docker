@@ -1,0 +1,22 @@
+pipeline {
+    agent {
+        label 'agent1'
+    }
+    stages {
+        stage('Check Docker Version') {
+            steps {
+                sh 'docker --version'
+            }
+        }
+        stage('Run Sample Docker Container') {
+            steps {
+                sh 'docker run hello-world'
+            }
+        }
+    }
+    post {
+        always {
+            echo 'Docker agent test completed.'
+        }
+    }
+}
