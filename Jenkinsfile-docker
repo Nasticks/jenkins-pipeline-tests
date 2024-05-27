@@ -3,20 +3,32 @@ pipeline {
         label 'agent-docker'
     }
     stages {
-        stage('Check Docker Version') {
+        stage('Checkout') {
             steps {
-                sh 'docker --version'
+                // Cloner le dépôt Git
+                git 'https://github.com/Nasticks/jenkins-pipeline-tests'
             }
         }
-        stage('Run Sample Docker Container') {
+        stage('Build Docker Image') {
             steps {
-                sh 'docker run hello-world'
+                // Construire l'image Docker
+                script {
+                    dockerImage = docker.build("simple-web-server:latest")
+                }
+            }
+        }
+        stage('Run Docker Container') {
+            steps {
+                // Exécuter le conteneur Docker
+                script {
+                    dockerImage.run('-p 8081:8081')
+                }
             }
         }
     }
     post {
         always {
-            echo 'Docker agent test precieux.'
+            echo 'Pipeline completed par precieux.'
         }
     }
 }
