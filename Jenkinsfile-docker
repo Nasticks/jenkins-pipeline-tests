@@ -28,7 +28,9 @@ pipeline {
                     // Run the Docker container to ensure it works
                     sh 'docker run --rm -d -p 8000:8000 --name test-container hello-world-flask:latest'
                     sleep 10 // Attendre que le conteneur démarre
-                    sh 'curl -f http://localhost:8000'
+                    sh 'docker ps -a'
+                    sh 'docker logs test-container'
+                    sh 'curl -f http://localhost:8000 || { echo "Curl failed"; docker logs test-container; exit 1; }'
                     sh 'docker stop test-container'
                 }
             }
