@@ -2,76 +2,49 @@ pipeline {
     agent any
 
     environment {
-        GIT_CREDENTIALS = 'github' // Le nom des credentials que vous avez configurés dans Jenkins
+        GIT_CREDENTIALS_ID = 'github-credentials' // Remplacez par l'ID de vos credentials GitHub
     }
 
     stages {
         stage('Checkout') {
             steps {
                 // Checkout the code from your repository
-                git branch: 'main', url: 'https://github.com/Nasticks/jenkins-pipeline-tests.git', credentialsId: env.GIT_CREDENTIALS
+                git branch: 'main', url: 'https://github.com/Nasticks/jenkins-pipeline-tests.git', credentialsId: env.GIT_CREDENTIALS_ID
             }
         }
         
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    // No build steps are needed for a simple Hello World
-                    dockerImage = docker.build("simple-web-server:latest")
+                    // Build the Docker image
+                    sh 'docker build -t hello-world-flask:latest .'
                 }
             }
         }
-        stage('Run Docker Container') {
+
+        stage('Test Docker Image') {
             steps {
-                // Exécuter le conteneur Docker
                 script {
-                    dockerImage.run('-p 8000:8000')
+                    // Run the Docker container to ensure it works
+                    sh 'docker run --rm -d -p 8000:8000 --name test-container hello-world-flask:latest'
+                    sleep 10 // Attendre que le conteneur démarre
+                    sh 'curl -f http://localhost:8000'
+                    sh 'docker stop test-container'
+                }
+            }
+        }
+
+        stage('Deploy Docker Image') {
+            steps {
+                script {
+                    // Deploy the Docker image on the deployment server
+                    sh '''
+                    docker stop hello-world-flask || true
+                    docker rm hello-world-flask || true
+                    docker run -d -p 8000:8000 --name hello-world-flask hello-world-flask:latest
+                    '''
                 }
             }
         }
     }
-    }
-
-
-
-
-
-
-
-
-
-
-// pipeline {
-//     agent {
-//         label 'jenkins-Agent'
-//     }
-//     stages {
-//         stage('Checkout') {
-//             steps {
-//                 // Cloner le dépôt Git
-//                 git 'https://github.com/Nasticks/jenkins-pipeline-tests.git'
-//             }
-//         }
-//         stage('Build Docker Image') {
-//             steps {
-//                 // Construire l'image Docker
-//                 script {
-//                     dockerImage = docker.build("simple-web-server:latest")
-//                 }
-//             }
-//         }
-//         stage('Run Docker Container') {
-//             steps {
-//                 // Exécuter le conteneur Docker
-//                 script {
-//                     dockerImage.run('-p 8000:8000')
-//                 }
-//             }
-//         }
-//     }
-//     post {
-//         always {
-//             echo 'Pipeline completed par precieux.'
-//         }
-//     }
-// }
+}
