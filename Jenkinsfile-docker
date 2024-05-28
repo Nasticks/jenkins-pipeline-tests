@@ -44,6 +44,7 @@ pipeline {
                     docker stop hello-world-flask || true
                     docker rm hello-world-flask || true
                     docker run -d -p 8000:8000 --name hello-world-flask hello-world-flask:latest
+                    docker start hello-world-flask 
                     '''
                 }
             }
