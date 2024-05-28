@@ -17,20 +17,23 @@ pipeline {
             steps {
                 script {
                     // No build steps are needed for a simple Hello World
-                    echo 'Building the Hello World application...'
+                    dockerImage = docker.build("simple-web-server:latest")
                 }
             }
         }
-
-        stage('Deploy') {
+        stage('Run Docker Container') {
             steps {
+                // Exécuter le conteneur Docker
                 script {
-                    // Start a simple HTTP server to serve the Hello World page
-                    echo 'Deploying the Hello World application...'
-                    sh 'python3 -m http.server 8000'
+                    dockerImage.run('-p 8000:8000')
                 }
             }
         }
+        post {
+        always {
+            echo 'Pipeline completed par precieux.'
+        }
+    }
     }
 }
 
