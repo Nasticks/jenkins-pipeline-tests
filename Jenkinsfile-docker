@@ -29,13 +29,8 @@ pipeline {
                 }
             }
         }
-        post {
-        always {
-            echo 'Pipeline completed par precieux.'
-        }
     }
     }
-}
 
 
 
