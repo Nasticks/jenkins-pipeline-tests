@@ -6,7 +6,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Cloner le dépôt Git
-                git clone 'https://github.com/Nasticks/jenkins-pipeline-tests.git'
+                git 'https://github.com/Nasticks/jenkins-pipeline-tests.git'
             }
         }
         stage('Build Docker Image') {
