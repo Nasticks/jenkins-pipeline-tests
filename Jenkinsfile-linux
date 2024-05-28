@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'agent-wsl2'
+        label 'jenkins-Agent'
     }
     stages {
         stage('Check OS Version') {
