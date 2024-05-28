@@ -1,34 +1,75 @@
 pipeline {
-    agent {
-        label 'jenkins-Agent'
-    }
+    agent any
+
     stages {
         stage('Checkout') {
             steps {
-                // Cloner le dépôt Git
-                git 'https://github.com/Nasticks/jenkins-pipeline-tests.git'
+                // Checkout the code from your repository
+              git 'https://github.com/Nasticks/jenkins-pipeline-tests.git'  
+                
             }
         }
-        stage('Build Docker Image') {
+        
+        stage('Build') {
             steps {
-                // Construire l'image Docker
                 script {
-                    dockerImage = docker.build("simple-web-server:latest")
+                    // No build steps are needed for a simple Hello World
+                    echo 'Building the Hello World application...'
                 }
             }
         }
-        stage('Run Docker Container') {
+
+        stage('Deploy') {
             steps {
-                // Exécuter le conteneur Docker
                 script {
-                    dockerImage.run('-p 8000:8000')
+                    // Start a simple HTTP server to serve the Hello World page
+                    echo 'Deploying the Hello World application...'
+                    sh 'python3 -m http.server 8000'
                 }
             }
-        }
-    }
-    post {
-        always {
-            echo 'Pipeline completed par precieux.'
         }
     }
 }
+
+
+
+
+
+
+
+
+
+// pipeline {
+//     agent {
+//         label 'jenkins-Agent'
+//     }
+//     stages {
+//         stage('Checkout') {
+//             steps {
+//                 // Cloner le dépôt Git
+//                 git 'https://github.com/Nasticks/jenkins-pipeline-tests.git'
+//             }
+//         }
+//         stage('Build Docker Image') {
+//             steps {
+//                 // Construire l'image Docker
+//                 script {
+//                     dockerImage = docker.build("simple-web-server:latest")
+//                 }
+//             }
+//         }
+//         stage('Run Docker Container') {
+//             steps {
+//                 // Exécuter le conteneur Docker
+//                 script {
+//                     dockerImage.run('-p 8000:8000')
+//                 }
+//             }
+//         }
+//     }
+//     post {
+//         always {
+//             echo 'Pipeline completed par precieux.'
+//         }
+//     }
+// }
