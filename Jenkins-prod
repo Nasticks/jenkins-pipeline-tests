@@ -18,13 +18,11 @@ pipeline{
                 cleanWs()
             }
         }
-        stages {
         stage('Checkout') {
             steps {
                 // Checkout the code from your repository
                 git branch: 'main', url: 'https://github.com/Nasticks/jenkins-pipeline-tests.git', credentialsId: env.GIT_CREDENTIALS_ID
             }
-        }
         }
         stage("Sonarqube Analysis "){
             steps{
