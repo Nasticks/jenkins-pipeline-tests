@@ -1,15 +1,17 @@
 pipeline{
     agent any
+    environment {
+        GIT_CREDENTIALS_ID = 'github' // Remplacez par l'ID de vos credentials GitHub
+        SCANNER_HOME=tool 'sonar-scanner'
+    }
     tools{
         jdk 'jdk17'
         nodejs 'node16'
     }
-     environment {
-        GIT_CREDENTIALS_ID = 'github' // Remplacez par l'ID de vos credentials GitHub
-    }
-    environment {
-        SCANNER_HOME=tool 'sonar-scanner'
-    }
+     
+    // environment {
+    //     SCANNER_HOME=tool 'sonar-scanner'
+    // }
     stages {
         stage('clean workspace'){
             steps{
@@ -22,6 +24,7 @@ pipeline{
                 // Checkout the code from your repository
                 git branch: 'main', url: 'https://github.com/Nasticks/jenkins-pipeline-tests.git', credentialsId: env.GIT_CREDENTIALS_ID
             }
+        }
         }
         stage("Sonarqube Analysis "){
             steps{
